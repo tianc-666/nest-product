@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: chat-room-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-wangjie}
+      MYSQL_DATABASE: chat_room
+      MYSQL_USER: ${MYSQL_USER:-chat_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-chat_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+
+  redis:
+    image: redis:7-alpine
+    container_name: chat-room-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  backend:
+    build:
+      context: ./chat-room-backend
+      dockerfile: Dockerfile
+    container_name: chat-room-backend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      DATABASE_URL: mysql://root:${MYSQL_ROOT_PASSWORD:-wangjie}@mysql:3306/chat_room
+      REDIS_URL: redis://redis:6379
+      JWT_SECRET: ${JWT_SECRET:-your-secret-key}
+    depends_on:
+      - mysql
+      - redis
+
+  frontend:
+    build:
+      context: ./chat-room-frontend
+      dockerfile: Dockerfile
+    container_name: chat-room-frontend
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
+  redis_data:

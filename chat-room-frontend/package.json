@@ -1,0 +1,46 @@
+{
+  "name": "chat-room-frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^6.1.0",
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
+    "@nestjs/mapped-types": "*",
+    "@nestjs/platform-socket.io": "^11.1.9",
+    "@nestjs/websockets": "^11.1.9",
+    "@tailwindcss/vite": "^4.1.17",
+    "ahooks": "^3.9.6",
+    "antd": "^6.0.1",
+    "axios": "^1.13.2",
+    "emoji-picker-react": "^4.16.1",
+    "less": "^4.4.2",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router-dom": "^7.10.0",
+    "socket.io": "^4.8.1",
+    "socket.io-client": "^4.8.1",
+    "styled-components": "^6.1.19",
+    "tailwindcss": "^4.1.17"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^5.1.1",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
+  }
+}
