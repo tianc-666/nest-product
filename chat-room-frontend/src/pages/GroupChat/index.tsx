@@ -4,7 +4,7 @@ import { useState } from "react";
 
 import { useForm } from "antd/es/form/Form";
 import { groupChatAction } from "../../action/groupChat";
-import CreateGroupChat from "./createGroupChat";
+import CreateGroupChat from "./CreateGroupChat";
 import GroupUserInfo from "./GroupUserInfo";
 import type { UserInfo } from "../user/Register";
 import { useNavigate } from "react-router-dom";
