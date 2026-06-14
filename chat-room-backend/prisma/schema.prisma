@@ -1,0 +1,108 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// 用户表
+model User {
+  id  Int @id @default(autoincrement())
+  username String @db.VarChar(50) @unique
+  password String @db.VarChar(50)
+  nickName String @db.VarChar(50)
+  email String @db.VarChar(50)
+  headPic String @db.VarChar(100) @default("")
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+
+  // 自身拥有的好友
+  friends FriendShip[] @relation("userToFriend")
+  // 被好友拥有的好友
+  inverseFriends FriendShip[] @relation("friendToUser")
+}
+
+// 好友关系表 多对多 关系表
+model FriendShip {
+  user User @relation("userToFriend",fields: [userId], references: [id])
+  userId Int
+
+  friend User @relation("friendToUser",fields: [friendId], references: [id])
+  friendId Int
+
+  @@id([userId,friendId])
+}
+
+model FriendRequest {
+  id Int @id @default(autoincrement())
+  // 请求提交方
+  fromUserId Int
+
+  // 请求接收方
+  toUserId Int
+  // 请求理由
+  reason String @db.VarChar(100) @default("")
+
+  // 请求状态 0 待处理 1 已同意 2 已拒绝
+  status Int @default(0)
+
+  // 创建时间
+  createTime DateTime @default(now())
+  // 更新时间
+  updateTime DateTime @updatedAt
+}
+
+//聊天室
+model ChatRoom {
+  id Int @id @default(autoincrement())
+  // 房间名称
+  name String @db.VarChar(50)
+  // 房间类型 0 单聊 1 群聊
+  type Int @default(0)
+  // 房间创建时间
+  createTime DateTime @default(now())
+  // 更新时间
+  updateTime DateTime @updatedAt
+}
+
+model UserChatRoom {
+  userId Int
+  chatRoomId Int
+
+  @@id([userId,chatRoomId])
+}
+
+
+// 消息聊天记录表
+model ChatHistory {
+  id Int @id @default(autoincrement())
+  content String @db.VarChar(500)
+
+  // 消息类型 0 文本 1 图片 2 文件
+  type Int @default(0)
+
+  chatroomId Int 
+  senderId Int
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+}
+
+
+// 消息收藏表
+model ChatHistoryFavorite {
+  id Int @id @default(autoincrement())
+  userId Int
+  chatHistoryId Int
+  
+  createTime DateTime @default(now())
+  updateTime DateTime @updatedAt
+}
