@@ -38,7 +38,7 @@ const CommonUpload: React.FC<{
       return;
     }
     if (info.file.status === "done") {
-      const url = "http://localhost:9000/chat-room/" + info.file.name;
+      const url = "/minio/chat-room/" + info.file.name;
       setUrl(url);
       setLoading(false);
       onChange?.(url);
