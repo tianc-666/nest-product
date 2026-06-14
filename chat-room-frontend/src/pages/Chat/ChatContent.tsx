@@ -76,7 +76,7 @@ const ChatContent = () => {
     if (!selectChartId) {
       return;
     }
-    const socket = (socketRef.current = io("http://localhost:3000"));
+    const socket = (socketRef.current = io());
     socket.on("connect", function () {
       const payload: JoinRoomPayload = {
         chatroomId: +selectChartId,
