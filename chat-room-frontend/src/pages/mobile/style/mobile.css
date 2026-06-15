@@ -1,0 +1,133 @@
+/* WeChat-style mobile global styles */
+:root {
+  --wechat-green: #07c160;
+  --bg-primary: #f5f5f5;
+  --bg-header: #ededed;
+  --text-primary: #000;
+  --text-secondary: #999;
+  --border-color: #e5e5e5;
+  --tabbar-height: 50px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 14px;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+    'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  background: var(--bg-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Page container with bottom padding for tabbar */
+.page-container {
+  min-height: 100vh;
+  padding-bottom: var(--tabbar-height);
+}
+
+/* WeChat green utility */
+.wechat-green {
+  color: var(--wechat-green);
+}
+
+/* List item styles */
+.list-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background .15s;
+}
+
+.list-item:active {
+  background: #ececec;
+}
+
+.list-item:last-child {
+  border-bottom: none;
+}
+
+.list-item__content {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.list-item__title {
+  font-size: 16px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item__desc {
+  font-size: 13px;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.list-item__avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  object-fit: cover;
+}
+
+/* Avatar placeholder (when no image) */
+.avatar-placeholder {
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  margin-right: 12px;
+  flex-shrink: 0;
+  background: #c9c9c9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 16px;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: #f44;
+  color: #fff;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* Safe area for iOS */
+@supports (padding-bottom: env(safe-area-inset-bottom)) {
+  .page-container {
+    padding-bottom: calc(var(--tabbar-height) + env(safe-area-inset-bottom));
+  }
+}

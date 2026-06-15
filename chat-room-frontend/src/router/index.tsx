@@ -17,14 +17,37 @@ import Message from "../pages/Message";
 import Chat from "../pages/Chat";
 import Favorite from "../pages/Favorite";
 
-// 路由守卫组件：检查登录状态
+// Mobile pages
+import MobileLogin from "../pages/mobile/pages/Login";
+import MobileRegister from "../pages/mobile/pages/Register";
+import MessageList from "../pages/mobile/pages/MessageList";
+import Contacts from "../pages/mobile/pages/Contacts";
+import Me from "../pages/mobile/pages/Me";
+import ChatDetail from "../pages/mobile/pages/ChatDetail";
+
+// PC route guard
 const RequireAuth = () => {
   const token = localStorage.getItem("token");
-  // 如果没有token，重定向到登录页
   return token ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
+// Mobile route guard
+const MobileRequireAuth = () => {
+  const token = localStorage.getItem("token");
+  return token ? <Outlet /> : <Navigate to="/m/login" replace />;
+};
+
+// Mobile layout
+const MobileLayout = () => {
+  return (
+    <div style={{ maxWidth: "100vw", minHeight: "100vh", background: "#f5f5f5" }}>
+      <Outlet />
+    </div>
+  );
+};
+
 const route: RouteObject[] = [
+  // PC routes
   {
     path: "/",
     element: <Layout />,
@@ -33,50 +56,41 @@ const route: RouteObject[] = [
         path: "/",
         element: <RequireAuth />,
         children: [
-          {
-            path: "/home",
-            element: <Home />,
-          },
-          {
-            path: "/user",
-            element: <UserPage />,
-          },
-          {
-            path: "/user/change-password",
-            element: <ChangePassword />,
-          },
-          {
-            path: "/friends",
-            element: <FriendsList />,
-          },
-          {
-            path: "/group",
-            element: <GroupChat />,
-          },
-          {
-            path: "/message",
-            element: <Message />,
-          },
-          {
-            path: "/chat/:chatroomId?",
-            element: <Chat />,
-          },
-          {
-            path: "/favorite",
-            element: <Favorite />,
-          },
+          { path: "/home", element: <Home /> },
+          { path: "/user", element: <UserPage /> },
+          { path: "/user/change-password", element: <ChangePassword /> },
+          { path: "/friends", element: <FriendsList /> },
+          { path: "/group", element: <GroupChat /> },
+          { path: "/message", element: <Message /> },
+          { path: "/chat/:chatroomId?", element: <Chat /> },
+          { path: "/favorite", element: <Favorite /> },
         ],
       },
     ],
   },
+  { path: "/login", element: <Login /> },
+  { path: "/register", element: <Register /> },
+
+  // Mobile routes
   {
-    path: "/login",
-    element: <Login />,
+    path: "/m",
+    element: <MobileLayout />,
+    children: [
+      {
+        path: "",
+        element: <MobileRequireAuth />,
+        children: [
+          { index: true, element: <Navigate to="/m/message" replace /> },
+          { path: "message", element: <MessageList /> },
+          { path: "contacts", element: <Contacts /> },
+          { path: "me", element: <Me /> },
+          { path: "chat/:chatroomId", element: <ChatDetail /> },
+        ],
+      },
+    ],
   },
-  {
-    path: "/register",
-    element: <Register />,
-  },
+  { path: "/m/login", element: <MobileLogin /> },
+  { path: "/m/register", element: <MobileRegister /> },
 ];
 
 export const router = createBrowserRouter(route);
