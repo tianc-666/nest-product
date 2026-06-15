@@ -28,6 +28,7 @@ import MobileUserInfo from "../pages/mobile/pages/UserInfo";
 import MobileChangePassword from "../pages/mobile/pages/ChangePassword";
 import FriendRequests from "../pages/mobile/pages/FriendRequests";
 import AddFriend from "../pages/mobile/pages/AddFriend";
+import Groups from "../pages/mobile/pages/Groups";
 
 // Detect mobile device
 const isMobile = () => {
@@ -128,7 +129,7 @@ const route: RouteObject[] = [
           { path: "contacts", element: <Contacts /> },
           { path: "contacts/add-friend", element: <AddFriend /> },
           { path: "contacts/friend-requests", element: <FriendRequests /> },
-          { path: "contacts/groups", element: <Contacts /> },
+          { path: "contacts/groups", element: <Groups /> },
           { path: "contacts/detail/:id", element: <ChatDetail /> },
           { path: "me", element: <Me /> },
           { path: "me/info", element: <MobileUserInfo /> },
