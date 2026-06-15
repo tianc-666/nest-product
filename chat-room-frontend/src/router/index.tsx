@@ -24,6 +24,8 @@ import MessageList from "../pages/mobile/pages/MessageList";
 import Contacts from "../pages/mobile/pages/Contacts";
 import Me from "../pages/mobile/pages/Me";
 import ChatDetail from "../pages/mobile/pages/ChatDetail";
+import MobileUserInfo from "../pages/mobile/pages/UserInfo";
+import MobileChangePassword from "../pages/mobile/pages/ChangePassword";
 
 // Detect mobile device
 const isMobile = () => {
@@ -123,8 +125,8 @@ const route: RouteObject[] = [
           { path: "message", element: <MessageList /> },
           { path: "contacts", element: <Contacts /> },
           { path: "me", element: <Me /> },
-          { path: "me/info", element: <UserPage /> },
-          { path: "me/password", element: <ChangePassword /> },
+          { path: "me/info", element: <MobileUserInfo /> },
+          { path: "me/password", element: <MobileChangePassword /> },
           { path: "chat/:chatroomId", element: <ChatDetail /> },
           { path: "friends", element: <FriendsList /> },
           { path: "group", element: <GroupChat /> },
