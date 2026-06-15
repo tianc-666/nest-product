@@ -4,6 +4,7 @@ import { UserAddOutlined, TeamOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import Header from '../components/Header';
+import TabBar from '../components/TabBar';
 
 interface Friend {
   id: number;
@@ -175,105 +176,109 @@ const Contacts: React.FC = () => {
     <div style={styles.page}>
       <Header title="通讯录" />
 
-      <div style={styles.searchWrap}>
-        <Input
-          style={styles.searchInput}
-          placeholder="搜索"
-          prefix={<span style={{ color: '#bbb' }} />}
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          allowClear
-        />
-      </div>
-
-      <div style={styles.section}>
-        <div
-          style={styles.sectionItem}
-          onClick={() => navigate('/m/contacts/friend-requests')}
-        >
-          <div style={{ ...styles.sectionIcon, background: GREEN, color: '#fff' }}>
-            <UserAddOutlined />
-          </div>
-          <span style={styles.sectionLabel}>新的朋友</span>
-          {friendRequestCount > 0 && (
-            <Badge count={friendRequestCount} style={{ marginRight: 4 }} />
-          )}
-          <span style={styles.sectionArrow}>&#8250;</span>
+      <div style={{ paddingTop: 45, paddingBottom: 56 }}>
+        <div style={styles.searchWrap}>
+          <Input
+            style={styles.searchInput}
+            placeholder="搜索"
+            prefix={<span style={{ color: '#bbb' }} />}
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            allowClear
+          />
         </div>
 
-        <div
-          style={styles.sectionItem}
-          onClick={() => navigate('/m/contacts/groups')}
-        >
-          <div style={{ ...styles.sectionIcon, background: GREEN, color: '#fff' }}>
-            <TeamOutlined />
-          </div>
-          <span style={styles.sectionLabel}>群聊</span>
-          {groups.length > 0 && (
-            <span style={{ color: '#999', fontSize: 13, marginRight: 4 }}>
-              {groups.length}
-            </span>
-          )}
-          <span style={styles.sectionArrow}>&#8250;</span>
-        </div>
-      </div>
-
-      {groups.length > 0 && (
         <div style={styles.section}>
-          {groups.map((group) => (
-            <div
-              key={group.id}
-              style={styles.groupItem}
-              onClick={() => navigate(`/m/chat/${group.id}`)}
-            >
-              <Avatar
-                size={40}
-                src={group.avatar}
-                style={{ background: GREEN, flexShrink: 0, borderRadius: 6 }}
-              >
-                {group.name?.charAt(0)}
-              </Avatar>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={styles.groupName}>{group.name}</div>
-                <div style={styles.groupCount}>{group.memberCount || 0} 人</div>
-              </div>
+          <div
+            style={styles.sectionItem}
+            onClick={() => navigate('/m/contacts/friend-requests')}
+          >
+            <div style={{ ...styles.sectionIcon, background: GREEN, color: '#fff' }}>
+              <UserAddOutlined />
             </div>
-          ))}
-        </div>
-      )}
+            <span style={styles.sectionLabel}>新的朋友</span>
+            {friendRequestCount > 0 && (
+              <Badge count={friendRequestCount} style={{ marginRight: 4 }} />
+            )}
+            <span style={styles.sectionArrow}>&#8250;</span>
+          </div>
 
-      {sortedLetters.map((letter) => (
-        <div key={letter} style={styles.section}>
-          <div style={styles.letterBar}>{letter}</div>
-          {grouped[letter].map((friend) => (
-            <div
-              key={friend.id}
-              style={styles.friendItem}
-              onClick={() => navigate(`/m/contacts/detail/${friend.id}`)}
-            >
-              <Avatar
-                size={40}
-                src={friend.avatar}
-                style={{ background: GREEN, flexShrink: 0 }}
-              >
-                {friend.nickname?.charAt(0)}
-              </Avatar>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={styles.friendName}>{friend.nickname}</div>
-                {friend.username && (
-                  <div style={styles.friendUsername}>{friend.username}</div>
-                )}
-              </div>
+          <div
+            style={styles.sectionItem}
+            onClick={() => navigate('/m/contacts/groups')}
+          >
+            <div style={{ ...styles.sectionIcon, background: GREEN, color: '#fff' }}>
+              <TeamOutlined />
             </div>
-          ))}
+            <span style={styles.sectionLabel}>群聊</span>
+            {groups.length > 0 && (
+              <span style={{ color: '#999', fontSize: 13, marginRight: 4 }}>
+                {groups.length}
+              </span>
+            )}
+            <span style={styles.sectionArrow}>&#8250;</span>
+          </div>
         </div>
-      ))}
 
-      {!loading && filteredFriends.length === 0 && (
-        <div style={{ textAlign: 'center', color: '#999', padding: 40 }}>
-          暂无联系人
-        </div>
-      )}
+        {groups.length > 0 && (
+          <div style={styles.section}>
+            {groups.map((group) => (
+              <div
+                key={group.id}
+                style={styles.groupItem}
+                onClick={() => navigate(`/m/chat/${group.id}`)}
+              >
+                <Avatar
+                  size={40}
+                  src={group.avatar}
+                  style={{ background: GREEN, flexShrink: 0, borderRadius: 6 }}
+                >
+                  {group.name?.charAt(0)}
+                </Avatar>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={styles.groupName}>{group.name}</div>
+                  <div style={styles.groupCount}>{group.memberCount || 0} 人</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {sortedLetters.map((letter) => (
+          <div key={letter} style={styles.section}>
+            <div style={styles.letterBar}>{letter}</div>
+            {grouped[letter].map((friend) => (
+              <div
+                key={friend.id}
+                style={styles.friendItem}
+                onClick={() => navigate(`/m/contacts/detail/${friend.id}`)}
+              >
+                <Avatar
+                  size={40}
+                  src={friend.avatar}
+                  style={{ background: GREEN, flexShrink: 0 }}
+                >
+                  {friend.nickname?.charAt(0)}
+                </Avatar>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={styles.friendName}>{friend.nickname}</div>
+                  {friend.username && (
+                    <div style={styles.friendUsername}>{friend.username}</div>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+
+        {!loading && filteredFriends.length === 0 && (
+          <div style={{ textAlign: 'center', color: '#999', padding: 40 }}>
+            暂无联系人
+          </div>
+        )}
+      </div>
+
+      <TabBar activeKey="contacts" onChange={(key) => navigate(`/m/${key}`)} />
     </div>
   );
 };

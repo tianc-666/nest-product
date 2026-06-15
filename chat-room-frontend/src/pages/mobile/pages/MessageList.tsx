@@ -4,6 +4,7 @@ import { SearchOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import Header from '../components/Header';
+import TabBar from '../components/TabBar';
 
 interface ChatRoom {
   id: number;
@@ -118,42 +119,45 @@ const MessageList: React.FC = () => {
         title="微信"
         right={<SearchOutlined style={styles.searchIcon} />}
       />
-      {loading ? (
-        <div style={{ textAlign: 'center', padding: 60 }}>
-          <Spin />
-        </div>
-      ) : (
-        <List
-          style={styles.list}
-          dataSource={rooms}
-          renderItem={(room) => (
-            <div
-              style={styles.item}
-              onClick={() => navigate(`/m/chat/${room.id}`)}
-            >
-              <Avatar
-                size={48}
-                src={room.avatar}
-                style={{ background: '#07c160', flexShrink: 0 }}
+      <div style={{ paddingTop: 45, paddingBottom: 56 }}>
+        {loading ? (
+          <div style={{ textAlign: 'center', padding: 60 }}>
+            <Spin />
+          </div>
+        ) : (
+          <List
+            style={styles.list}
+            dataSource={rooms}
+            renderItem={(room) => (
+              <div
+                style={styles.item}
+                onClick={() => navigate(`/m/chat/${room.id}`)}
               >
-                {room.name?.charAt(0)}
-              </Avatar>
-              <div style={styles.info}>
-                <div style={styles.nameRow}>
-                  <span style={styles.name}>{room.name}</span>
-                  <span style={styles.time}>{formatTime(room.lastMessageTime)}</span>
+                <Avatar
+                  size={48}
+                  src={room.avatar}
+                  style={{ background: '#07c160', flexShrink: 0 }}
+                >
+                  {room.name?.charAt(0)}
+                </Avatar>
+                <div style={styles.info}>
+                  <div style={styles.nameRow}>
+                    <span style={styles.name}>{room.name}</span>
+                    <span style={styles.time}>{formatTime(room.lastMessageTime)}</span>
+                  </div>
+                  <div style={styles.lastMsg}>{room.lastMessage || ''}</div>
                 </div>
-                <div style={styles.lastMsg}>{room.lastMessage || ''}</div>
+                {room.unreadCount ? (
+                  <div style={styles.badge}>
+                    {room.unreadCount > 99 ? '99+' : room.unreadCount}
+                  </div>
+                ) : null}
               </div>
-              {room.unreadCount ? (
-                <div style={styles.badge}>
-                  {room.unreadCount > 99 ? '99+' : room.unreadCount}
-                </div>
-              ) : null}
-            </div>
-          )}
-        />
-      )}
+            )}
+          />
+        )}
+      </div>
+      <TabBar activeKey="message" onChange={(key) => navigate(`/m/${key}`)} />
     </div>
   );
 };

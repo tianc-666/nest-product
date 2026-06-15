@@ -10,6 +10,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import Header from '../components/Header';
+import TabBar from '../components/TabBar';
 
 interface UserInfo {
   id: number;
@@ -203,59 +204,63 @@ const Me: React.FC = () => {
     <div style={styles.page}>
       <Header title="我" />
 
-      <div style={styles.userCard} onClick={() => navigate('/m/me/info')}>
-        <Avatar
-          size={56}
-          src={userInfo?.avatar}
-          style={{ background: GREEN, flexShrink: 0 }}
-        >
-          {userInfo?.nickname?.charAt(0) || <UserOutlined />}
-        </Avatar>
-        <div style={styles.userInfo}>
-          <div style={styles.nickname}>{userInfo?.nickname || '未设置昵称'}</div>
-          <div style={styles.username}>微信号: {userInfo?.username || '-'}</div>
-          {userInfo?.signature && (
-            <div style={styles.signature}>{userInfo.signature}</div>
-          )}
+      <div style={{ paddingTop: 45, paddingBottom: 56 }}>
+        <div style={styles.userCard} onClick={() => navigate('/m/me/info')}>
+          <Avatar
+            size={56}
+            src={userInfo?.avatar}
+            style={{ background: GREEN, flexShrink: 0 }}
+          >
+            {userInfo?.nickname?.charAt(0) || <UserOutlined />}
+          </Avatar>
+          <div style={styles.userInfo}>
+            <div style={styles.nickname}>{userInfo?.nickname || '未设置昵称'}</div>
+            <div style={styles.username}>微信号: {userInfo?.username || '-'}</div>
+            {userInfo?.signature && (
+              <div style={styles.signature}>{userInfo.signature}</div>
+            )}
+          </div>
+          <span style={styles.menuArrow}>&#8250;</span>
         </div>
-        <span style={styles.menuArrow}>&#8250;</span>
+
+        <div style={styles.menuGroup}>
+          {menuItems.map((item, index) => {
+            const isLast = index === menuItems.length - 1 && dangerItems.length === 0;
+            return (
+              <div
+                key={item.key}
+                style={isLast ? styles.lastMenuItem : styles.menuItem}
+                onClick={item.onClick}
+              >
+                <span style={styles.menuIcon}>{item.icon}</span>
+                <span style={styles.menuLabel}>{item.label}</span>
+                <span style={styles.menuArrow}>&#8250;</span>
+              </div>
+            );
+          })}
+        </div>
+
+        <div style={styles.menuGroup}>
+          {dangerItems.map((item, index) => {
+            const isLast = index === dangerItems.length - 1;
+            return (
+              <div
+                key={item.key}
+                style={isLast ? styles.lastMenuItem : styles.menuItem}
+                onClick={item.onClick}
+              >
+                <span style={styles.menuIcon}>{item.icon}</span>
+                <span style={item.danger ? styles.dangerLabel : styles.menuLabel}>
+                  {item.label}
+                </span>
+                <span style={styles.menuArrow}>&#8250;</span>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      <div style={styles.menuGroup}>
-        {menuItems.map((item, index) => {
-          const isLast = index === menuItems.length - 1 && dangerItems.length === 0;
-          return (
-            <div
-              key={item.key}
-              style={isLast ? styles.lastMenuItem : styles.menuItem}
-              onClick={item.onClick}
-            >
-              <span style={styles.menuIcon}>{item.icon}</span>
-              <span style={styles.menuLabel}>{item.label}</span>
-              <span style={styles.menuArrow}>&#8250;</span>
-            </div>
-          );
-        })}
-      </div>
-
-      <div style={styles.menuGroup}>
-        {dangerItems.map((item, index) => {
-          const isLast = index === dangerItems.length - 1;
-          return (
-            <div
-              key={item.key}
-              style={isLast ? styles.lastMenuItem : styles.menuItem}
-              onClick={item.onClick}
-            >
-              <span style={styles.menuIcon}>{item.icon}</span>
-              <span style={item.danger ? styles.dangerLabel : styles.menuLabel}>
-                {item.label}
-              </span>
-              <span style={styles.menuArrow}>&#8250;</span>
-            </div>
-          );
-        })}
-      </div>
+      <TabBar activeKey="me" onChange={(key) => navigate(`/m/${key}`)} />
     </div>
   );
 };
