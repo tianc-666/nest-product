@@ -25,6 +25,21 @@ import Contacts from "../pages/mobile/pages/Contacts";
 import Me from "../pages/mobile/pages/Me";
 import ChatDetail from "../pages/mobile/pages/ChatDetail";
 
+// Detect mobile device
+const isMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+    navigator.userAgent
+  );
+};
+
+// Auto redirect to mobile/desktop based on device
+const AutoRedirect = () => {
+  if (isMobile()) {
+    return <Navigate to="/m/message" replace />;
+  }
+  return <Navigate to="/home" replace />;
+};
+
 // PC route guard
 const RequireAuth = () => {
   const token = localStorage.getItem("token");
@@ -47,7 +62,31 @@ const MobileLayout = () => {
 };
 
 const route: RouteObject[] = [
+  // Root - auto detect device
+  { path: "/", element: <AutoRedirect /> },
+
   // PC routes
+  {
+    path: "/pc",
+    element: <Layout />,
+    children: [
+      {
+        path: "",
+        element: <RequireAuth />,
+        children: [
+          { path: "home", element: <Home /> },
+          { path: "user", element: <UserPage /> },
+          { path: "user/change-password", element: <ChangePassword /> },
+          { path: "friends", element: <FriendsList /> },
+          { path: "group", element: <GroupChat /> },
+          { path: "message", element: <Message /> },
+          { path: "chat/:chatroomId?", element: <Chat /> },
+          { path: "favorite", element: <Favorite /> },
+        ],
+      },
+    ],
+  },
+  // Keep old PC paths working
   {
     path: "/",
     element: <Layout />,
