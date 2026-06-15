@@ -189,10 +189,7 @@ const Contacts: React.FC = () => {
         </div>
 
         <div style={styles.section}>
-          <div
-            style={styles.sectionItem}
-            onClick={() => navigate('/m/contacts/friend-requests')}
-          >
+          <div style={styles.sectionItem}>
             <div style={{ ...styles.sectionIcon, background: GREEN, color: '#fff' }}>
               <UserAddOutlined />
             </div>
@@ -203,10 +200,7 @@ const Contacts: React.FC = () => {
             <span style={styles.sectionArrow}>&#8250;</span>
           </div>
 
-          <div
-            style={styles.sectionItem}
-            onClick={() => navigate('/m/contacts/groups')}
-          >
+          <div style={styles.sectionItem}>
             <div style={{ ...styles.sectionIcon, background: GREEN, color: '#fff' }}>
               <TeamOutlined />
             </div>
