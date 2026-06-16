@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { List, Avatar, Badge, Input, Spin } from 'antd';
+import { Avatar, Badge, Input, Spin } from 'antd';
 import { UserAddOutlined, TeamOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
@@ -128,14 +128,17 @@ const Contacts: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [friendsRes, groupsRes] = await Promise.all([
+        const [friendsRes, groupsRes, requestsRes] = await Promise.all([
           axiosInstance.get('/friend-ship/list'),
           axiosInstance.get('/chatroom/list', { params: { type: 1 } }),
+          axiosInstance.get('/friend-ship/request-list').catch(() => ({ data: [] })),
         ]);
         const friendList = friendsRes.data?.list || (Array.isArray(friendsRes.data) ? friendsRes.data : []);
         setFriends(friendList);
         const groupList = groupsRes.data?.list || (Array.isArray(groupsRes.data) ? groupsRes.data : []);
         setGroups(groupList);
+        const requestList = Array.isArray(requestsRes.data) ? requestsRes.data : [];
+        setFriendRequestCount(requestList.filter((r: any) => r.status === 0).length);
       } catch {
         // error handled by interceptor
       } finally {

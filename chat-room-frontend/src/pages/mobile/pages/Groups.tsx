@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar } from 'antd';
-import { TeamOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import Header from '../components/Header';

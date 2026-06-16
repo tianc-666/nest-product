@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Avatar, Spin, Modal } from 'antd';
 import {
-  RightOutlined,
   LockOutlined,
   InfoCircleOutlined,
   LogoutOutlined,

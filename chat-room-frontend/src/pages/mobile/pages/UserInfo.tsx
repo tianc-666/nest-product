@@ -5,14 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import Header from '../components/Header';
 
-interface UserInfo {
-  id: number;
-  username: string;
-  nickname: string;
-  email: string;
-  avatar: string;
-}
-
 const GREEN = '#07c160';
 
 const styles: Record<string, React.CSSProperties> = {
