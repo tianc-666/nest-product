@@ -124,7 +124,7 @@ const MobileUserInfo: React.FC = () => {
                 try {
                   const res = await axiosInstance.get(`/minio/presignedUrl?fileName=${(file as File).name}`);
                   await axiosInstance.put(res.data, file);
-                  const url = `/minio/chat-room/${(file as File).name}`;
+                  const url = `${window.location.protocol}//${window.location.hostname}:9000/chat-room/${(file as File).name}`;
                   setForm((prev) => ({ ...prev, avatar: url }));
                   onSuccess?.(url);
                 } catch {
