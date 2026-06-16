@@ -86,6 +86,8 @@ const MessageList: React.FC = () => {
   const navigate = useNavigate();
   const [rooms, setRooms] = useState<ChatRoom[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showSearch, setShowSearch] = useState(false);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -113,12 +115,27 @@ const MessageList: React.FC = () => {
     return `${d.getMonth() + 1}/${d.getDate()}`;
   };
 
+  const filteredRooms = rooms.filter((room) =>
+    room.name?.toLowerCase().includes(searchText.toLowerCase())
+  );
+
   return (
     <div style={styles.page}>
       <Header
-        title="微信"
-        right={<SearchOutlined style={styles.searchIcon} />}
+        title="消息"
+        right={<SearchOutlined style={styles.searchIcon} onClick={() => setShowSearch(!showSearch)} />}
       />
+      {showSearch && (
+        <div style={{ background: '#fff', padding: '8px 12px' }}>
+          <input
+            style={{ width: '100%', height: 36, border: '1px solid #e5e5e5', borderRadius: 6, padding: '0 12px', fontSize: 14, outline: 'none' }}
+            placeholder="搜索聊天"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            autoFocus
+          />
+        </div>
+      )}
       <div style={{ paddingTop: 45, paddingBottom: 56 }}>
         {loading ? (
           <div style={{ textAlign: 'center', padding: 60 }}>
@@ -127,7 +144,7 @@ const MessageList: React.FC = () => {
         ) : (
           <List
             style={styles.list}
-            dataSource={rooms}
+            dataSource={filteredRooms}
             renderItem={(room) => (
               <div
                 style={styles.item}

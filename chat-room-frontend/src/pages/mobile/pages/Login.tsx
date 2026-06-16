@@ -89,7 +89,7 @@ const Login: React.FC = () => {
   return (
     <div style={styles.page}>
       <div style={styles.card}>
-        <div style={styles.title}>微信登录</div>
+        <div style={styles.title}>ChatRoom 登录</div>
         <div style={styles.field}>
           <Input
             size="large"

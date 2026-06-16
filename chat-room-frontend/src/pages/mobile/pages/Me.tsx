@@ -215,7 +215,7 @@ const Me: React.FC = () => {
           </Avatar>
           <div style={styles.userInfo}>
             <div style={styles.nickname}>{userInfo?.nickname || '未设置昵称'}</div>
-            <div style={styles.username}>微信号: {userInfo?.username || '-'}</div>
+            <div style={styles.username}>用户名: {userInfo?.username || '-'}</div>
             {userInfo?.signature && (
               <div style={styles.signature}>{userInfo.signature}</div>
             )}
