@@ -76,9 +76,9 @@ const MobileUserInfo: React.FC = () => {
         if (res.data) {
           setForm({
             username: res.data.username || '',
-            nickname: res.data.nickname || '',
+            nickname: res.data.nickName || res.data.nickname || '',
             email: res.data.email || '',
-            avatar: res.data.avatar || '',
+            avatar: res.data.headPic || res.data.avatar || '',
           });
         }
       } catch {
