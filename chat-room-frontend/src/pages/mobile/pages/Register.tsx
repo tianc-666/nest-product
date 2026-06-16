@@ -85,7 +85,7 @@ const Register: React.FC = () => {
     }
     setLoading(true);
     try {
-      const res = await axiosInstance.post('/user/create', form);
+      const res = await axiosInstance.post('/user/register', form);
       if (res.data) {
         message.success('注册成功，请登录');
         navigate('/m/login');

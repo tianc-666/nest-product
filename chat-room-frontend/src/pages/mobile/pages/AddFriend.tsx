@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Input, message } from 'antd';
-import { SearchOutlined } from '@ant-design/icons';
+import { UserAddOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../../utils/axios';
 import Header from '../components/Header';
@@ -9,7 +9,7 @@ const GREEN = '#07c160';
 
 const styles: Record<string, React.CSSProperties> = {
   page: { minHeight: '100vh', background: '#ededed' },
-  searchBox: { background: '#fff', padding: '16px' },
+  form: { background: '#fff', padding: '16px' },
   input: {
     width: '100%',
     height: 44,
@@ -18,7 +18,10 @@ const styles: Record<string, React.CSSProperties> = {
     padding: '0 12px',
     fontSize: 15,
     outline: 'none',
+    boxSizing: 'border-box' as const,
   },
+  field: { marginBottom: 16 },
+  label: { fontSize: 14, color: '#333', marginBottom: 8, display: 'block' },
   btn: {
     width: '100%',
     height: 44,
@@ -27,49 +30,34 @@ const styles: Record<string, React.CSSProperties> = {
     border: 'none',
     borderRadius: 6,
     fontSize: 16,
-    marginTop: 16,
-  },
-  result: { background: '#fff', marginTop: 12, padding: '16px' },
-  resultItem: {
-    display: 'flex',
-    alignItems: 'center',
-    gap: 12,
-    padding: '12px 0',
-    borderBottom: '0.5px solid #e5e5e5',
   },
 };
 
 const AddFriend: React.FC = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState('');
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+  const [form, setForm] = useState({
+    username: '',
+    reason: '',
+  });
 
-  const handleSearch = async () => {
-    if (!username.trim()) {
+  const handleAdd = async () => {
+    if (!form.username.trim()) {
       message.error('请输入用户名');
       return;
     }
     setLoading(true);
     try {
-      const res = await axiosInstance.get(`/user/find?username=${username}`);
-      setResult(res.data);
-    } catch {
-      message.error('用户不存在');
-      setResult(null);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAdd = async (userId: number) => {
-    try {
-      await axiosInstance.post('/friend-ship/add', { userId, reason: '' });
+      await axiosInstance.post('/friend-ship/add', {
+        username: form.username,
+        reason: form.reason,
+      });
       message.success('已发送好友请求');
-      setResult(null);
-      setUsername('');
+      setForm({ username: '', reason: '' });
     } catch {
       // handled
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -77,43 +65,37 @@ const AddFriend: React.FC = () => {
     <div style={styles.page}>
       <Header title="添加好友" showBack onBack={() => navigate('/m/contacts')} />
       <div style={{ paddingTop: 45 }}>
-        <div style={styles.searchBox}>
-          <div style={{ display: 'flex', gap: 12 }}>
+        <div style={styles.form}>
+          <div style={styles.field}>
+            <label style={styles.label}>用户名</label>
             <Input
-              style={{ ...styles.input, flex: 1 }}
-              placeholder="输入用户名搜索"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              onPressEnter={handleSearch}
+              style={styles.input}
+              placeholder="请输入好友用户名"
+              value={form.username}
+              onChange={(e) => setForm({ ...form, username: e.target.value })}
+              prefix={<UserAddOutlined style={{ color: '#bbb' }} />}
             />
-            <Button
-              style={{ height: 44, background: GREEN, color: '#fff', border: 'none' }}
-              icon={<SearchOutlined />}
-              loading={loading}
-              onClick={handleSearch}
-            >
-              搜索
-            </Button>
           </div>
-        </div>
 
-        {result && (
-          <div style={styles.result}>
-            <div style={styles.resultItem}>
-              <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 16, color: '#000' }}>{result.nickname || result.username}</div>
-                <div style={{ fontSize: 13, color: '#999' }}>用户名: {result.username}</div>
-              </div>
-              <Button
-                type="primary"
-                style={{ background: GREEN, border: 'none' }}
-                onClick={() => handleAdd(result.id)}
-              >
-                添加好友
-              </Button>
-            </div>
+          <div style={styles.field}>
+            <label style={styles.label}>验证消息（可选）</label>
+            <Input
+              style={styles.input}
+              placeholder="请输入验证消息"
+              value={form.reason}
+              onChange={(e) => setForm({ ...form, reason: e.target.value })}
+            />
           </div>
-        )}
+
+          <Button
+            type="primary"
+            style={styles.btn}
+            loading={loading}
+            onClick={handleAdd}
+          >
+            添加好友
+          </Button>
+        </div>
       </div>
     </div>
   );

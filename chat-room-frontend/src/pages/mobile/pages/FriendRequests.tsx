@@ -53,7 +53,7 @@ const FriendRequests: React.FC = () => {
 
   const handleAgree = async (id: number) => {
     try {
-      await axiosInstance.post('/friend-ship/agree', { id });
+      await axiosInstance.post('/friend-ship/agree', { friendId: id });
       message.success('已同意');
       fetchRequests();
     } catch { /* */ }
@@ -61,7 +61,7 @@ const FriendRequests: React.FC = () => {
 
   const handleReject = async (id: number) => {
     try {
-      await axiosInstance.post('/friend-ship/reject', { id });
+      await axiosInstance.post('/friend-ship/reject', { friendId: id });
       message.success('已拒绝');
       fetchRequests();
     } catch { /* */ }
