@@ -10,9 +10,9 @@ export class MinioController {
   @Get('presignedUrl')
   async presignedPutObject(@Query('fileName') fileName: string, @Req() req: Request) {
     const url = await this.minioClient.presignedPutObject('chat-room', fileName);
-    // 用请求的 host 替换 Docker 内部地址
+    // 用请求的 host 替换 Docker 内部地址，并加上 /minio 前缀走 nginx 代理
     const protocol = req.headers['x-forwarded-proto'] || 'http';
     const host = req.headers['x-forwarded-host'] || req.headers.host;
-    return url.replace(/http:\/\/minio:9000/, `${protocol}://${host}`);
+    return url.replace(/http:\/\/minio:9000/, `${protocol}://${host}/minio`);
   }
 }
