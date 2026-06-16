@@ -11,7 +11,7 @@ export class EmailService {
       secure: false,
       auth: {
         user: '935700953@qq.com',
-        pass: 'tsyvljbcglefbbfd',
+        pass: 'otwpwcwfaopobdca',
       },
     });
   }
