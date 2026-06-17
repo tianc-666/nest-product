@@ -6,16 +6,15 @@ export class EmailService {
   transporter: Transporter;
   constructor() {
     this.transporter = createTransport({
-      host: 'smtp.qq.com',
-      port: 587,
+      host: process.env.SMTP_HOST || 'smtp-relay.brevo.com',
+      port: parseInt(process.env.SMTP_PORT || '587'),
       secure: false,
       auth: {
-        user: '935700953@qq.com',
-        pass: 'otwpwcwfaopobdca',
+        user: process.env.SMTP_USER || '',
+        pass: process.env.SMTP_PASS || '',
       },
     });
   }
-  // 调用qq邮箱发送邮件
   async sendEmail({
     to,
     subject,
@@ -27,8 +26,8 @@ export class EmailService {
   }) {
     await this.transporter.sendMail({
       from: {
-        name: 'Chat Room',
-        address: '935700953@qq.com',
+        name: 'ChatRoom',
+        address: process.env.SMTP_FROM || 'noreply@chatroom.com',
       },
       to,
       subject,
